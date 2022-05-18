@@ -17,7 +17,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			if(mysqli_errno($connection)){
 				echo "<h2 style=\"color:red\">Errore connessione dbs</h2>";
 			}
-			$connection->close();
 		?>
 	
 	</body>
