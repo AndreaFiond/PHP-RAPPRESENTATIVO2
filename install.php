@@ -14,8 +14,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body>
 		<?php
 			$dbname="lweb25";
-			$userTable="utente";
-			$phoneTable="telefono";
+			$userTable="STutente";
+			$phoneTable="STtelefono";
 			$i=0;
 						
 			$connection=new mysqli("localhost","lweb25","lweb25");
