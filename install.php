@@ -14,8 +14,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body>
 		<?php
 			$dbname="lweb25";
-			$userTable="STutente";
-			$phoneTable="STtelefono";
+			$userTable="Utente";
+			$phoneTable="Telefono";
 			$i=0;
 						
 			$connection=new mysqli("localhost","lweb25","lweb25");
@@ -38,7 +38,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			///////////////////////////////////////
 			//CREAZIONE TABELLE DBS///////////////
 			/////////////////////////////////////
-			$connection=new mysqli("localhost","lweb25","lweb25",$dbname);
+			
+			require_once("connection.php");
+			//$connection=new mysqli("localhost","lweb25","lweb25",$dbname);
 
 			if(mysqli_errno($connection))
 				echo "<h1 style=\"color:red\">DBS non raggiungibile</h2>";
@@ -78,14 +80,14 @@ function if_table_exists ($conn,$tablename)
 $result = mysqli_query($conn,"SHOW TABLES LIKE '".$tablename."'");
 //conto il numero di righe risultanti
 $row=mysql_num_rows($result);
-//$row Ã¨ maggiore di 0
+//$row è maggiore di 0
 if($row>0)
 {
 return true;
 }
 return false;
 }
-//nel caso la funzione ci restituisce true, la tabella cercata Ã¨ presente nel db
+//nel caso la funzione ci restituisce true, la tabella cercata è presente nel db
 if( if_table_exists($connection,$phoneTable))
 {
 echo "La tabella esiste!";
@@ -116,7 +118,7 @@ else echo "not exist";
 				}
 				$i+=1;
 			}
-				
+			$connection->close();	
 		?>
 	
 	</body>

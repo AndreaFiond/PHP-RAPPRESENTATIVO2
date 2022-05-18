@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+	
+	<head>
+		<title>Effettua login</title>
+		<style type="text/css">
+			#contenitore{
+				background-color:beige;
+				margin-left:10%;
+				margin-right:10%;
+				display:flex;
+				justify-content:center;
+				border-style:solid;
+				border-color:blue;
+			}
+		</style>
+	</head>
+	
+	<body>
+		<h1 style="margin-top:5%;display:flex;justify-content:center;color:blue; font-family:Arial">EFFETTUARE LOGIN</h1>
+		<div id="contenitore">
+			<form action="Login.php" method="post">
+				<p>Username: <input type="text" name="username"></p>
+				<p>Password: <input type="password" name="password"></p>
+				<p style="display:flex; justify-content:center"><input type="submit" name="login" value="login">
+			</form>
+		</div>
+		
+	</body>
+
+</html>

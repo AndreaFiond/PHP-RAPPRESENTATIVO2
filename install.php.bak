@@ -13,7 +13,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	
 	<body>
 		<?php
-			$connection=new mysqli("localhost","root",);
+			$connection=
 		
 		
 		
