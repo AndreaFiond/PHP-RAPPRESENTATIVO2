@@ -10,14 +10,29 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 		<style type="text/css">
 			#contenitore{
 				background-color:beige;
-				margin-left:10%;
-				margin-right:10%;
-				display:flex;       /*per centrare contenuto*/
-				justify-content:center;
+				margin-left:auto;
+				margin-right:auto;
+				display:flex;       
+				justify-content:space-around;
+				align-items:center;
 				border-style:solid;
 				border-color:blue;
+				font-size:25px;
+				height:30%;
+				width:60%;
 			}
 		</style>
+		<script type="text/javascript">
+			function formvalidator(){
+				var usr = document.forms['userform']['username'].value; //assegnamo ad usr il valore di username
+				var pwd= document.forms['userform']['password'].value;
+				if(usr == null || pwd == null || usr == "" || pwd == ""){
+					alert ("Dati mancanti");
+					return false;
+				}
+				return true;
+			}
+		</script>
 	</head>
 	<!-- dobbiamo connetterci al dbs (realizzeremo uno script apposito in modo da evitare di riscriverlo ogni volta, al quale accederemo con la funzione php
 		require_once(connectiondbs.php);
@@ -32,13 +47,18 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body>
 	<h1 style="margin-top:5%;display:flex;justify-content:center;color:blue; font-family:Arial">EFFETTUARE LOGIN</h1>
 		<div id="contenitore">
-			<form action="Login.php" method="post">
+			<form name="userform" action="Login.php" method="post" onsubmit="return formvalidator()">
 				<p>Username: <input type="text" name="username"></p>
 				<p>Password: <input type="password" name="password"></p>
-				<p style="display:flex; justify-content:center"><input type="submit" name="login" value="login">
+				<p style="display:flex; justify-content:center"><input type="submit" name="login" value="login"></p>
+			</form>
+			
+			<form name="admin" action="admin.php" method="post">
+			<p style="display:flex; justify-content:center"><input type="submit" name="admin" value="Accedi come amministratore" > </p>
 			</form>
 		</div>
 		<?php
+		if(isset($_POST['login'])){ //se abbiamo compilato la form
 		$username=$_POST['username'];
 		$password=$_POST['password'];
 		require_once("connection.php");
@@ -53,21 +73,22 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					$_SESSION['datalogin']=time();
 					$_SESSION['username']=$username;
 					$_SESSION['password']=$password;
+					$_SESSION['spesa_attuale']=0; /*queste variabili session stanno nel server*/
+					$_SESSION['carrello']=array();
 					/*a questo punto dovremo essere reindirizzati in una pagina dove poter effettuare acquisti*/
 					header('Location: telefoni.php'); /*header indirizza a quella pagina*/
 					/*echo"Benvenuto ";echo $row['username'];echo "<br />Totale speso=";echo $row['totalespeso'];echo"$"; /*stampiamo messaggio di benvenuto all'utente
 					echo"<br />Orario collegamento:";echo $_SESSION['datalogin'];*/
-					exit(); /*chiudiamo la sessione*/
 				}
 				else {/*l'utente non esiste*/
-					echo"<h1 style=\"color:red\"> Credenziali non corrette </h1><hr>";
+					echo "<script> alert(\"Dati errati\"); </script>";
 				}
 			}
 			else { /*se non siamo riusciti ad accedere alla tabella*/
 				printf("Ops... la query non da risultato!");
-				exit();
+			}
+			$connection->close(); /*chiudiamo connessione con dbs*/
 		}
-		$connection->close(); /*chiudiamo connessione con dbs*/
 		?>
 	
 	

@@ -11,8 +11,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	
 	<body>
 		<?php
-			$dbname="lweb25";
-			$connection= new mysqli("localhost","lweb25","lweb25",$dbname);
+			$dbname="lweb1";
+			$connection= new mysqli("localhost","root","",$dbname);
 			
 			if(mysqli_errno($connection)){
 				echo "<h2 style=\"color:red\">Errore connessione dbs</h2>";

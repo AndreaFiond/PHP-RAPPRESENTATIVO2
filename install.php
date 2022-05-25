@@ -10,15 +10,15 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			install.php
 		</title>
 	</head>
-	
 	<body>
 		<?php
-			$dbname="lweb25";
+			$dbname="lweb1";
 			$userTable="Utente";
+			$adminTable="Admin";
 			$phoneTable="Telefono";
 			$i=0;
 						
-			$connection=new mysqli("localhost","lweb25","lweb25");
+			$connection=new mysqli("localhost","root","");
 
 			if(mysqli_errno($connection)){
 				echo "errore";
@@ -44,11 +44,12 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 			if(mysqli_errno($connection))
 				echo "<h1 style=\"color:red\">DBS non raggiungibile</h2>";
+			    mysql_drop_db($dbname);
 			/////TABELLA UTENTE
 			$query= "CREATE TABLE if not exists $userTable(
 				username VARCHAR(20) NOT NULL,
 				password VARCHAR(20) NOT NULL,
-				spesatotale VARCHAR(20) NOT NULL
+				totalespeso double NOT NULL
 				)";
 			echo $query;
 			if(mysqli_query($connection,$query)){
@@ -70,6 +71,20 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			}	
 			else {
 				echo "<h2 style=\"color:red\">errore creazione tabella telefono</h2>";
+			}
+			
+			
+			////TABELLA ADMIN
+			$query= "CREATE TABLE if not exists $adminTable(
+				username VARCHAR(20) NOT NULL,
+				password VARCHAR(20) NOT NULL
+				)";
+			echo $query;
+			if(mysqli_query($connection,$query)){
+				echo "<h2 style=\"color:green\">tabella admin creata</h2>";
+			}	
+			else {
+				echo "<h2 style=\"color:red\">errore creazione tabella admin</h2>";
 			}
 			
 /////CONTROLLO ESISTENZA TABELLA////////////////
@@ -104,9 +119,10 @@ else echo "not exist";
             $sql[1]= "INSERT INTO $phoneTable (nome, prezzo) VALUES (\"iphone12\", \"1200\")";
             $sql[2]= "INSERT INTO $phoneTable (nome, prezzo) VALUES (\"samsung s9\", \"800\") ";
             $sql[3]= "INSERT INTO $phoneTable (nome, prezzo) VALUES (\"huawei\", \"500\") ";
-            $sql[4]= "INSERT INTO $userTable (username, password, spesatotale) VALUES (\"luca\",\"luca\",\"0\") ";
-            $sql[5]= "INSERT INTO $userTable (username, password, spesatotale) VALUES (\"andrea\",\"andrea\",\"0\") ";
-            $sql[6]= "INSERT INTO $userTable (username, password, spesatotale) VALUES (\"prof\",\"prof\",\"0\") ";
+            $sql[4]= "INSERT INTO $userTable (username, password, totalespeso) VALUES (\"luca\",\"luca\",\"0\") ";
+            $sql[5]= "INSERT INTO $userTable (username, password, totalespeso) VALUES (\"andrea\",\"andrea\",\"0\") ";
+            $sql[6]= "INSERT INTO $userTable (username, password, totalespeso) VALUES (\"prof\",\"prof\",\"0\") ";
+			$sql[7]= "INSERT INTO $adminTable (username, password) VALUES (\"admin\",\"admin\") ";
 			
 			while($i<sizeof($sql)){
 				echo "$sql[$i] \n <br />";

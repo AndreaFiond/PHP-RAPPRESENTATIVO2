@@ -74,9 +74,9 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 	<body>
 	<div id="header">
 		<ul>
-			<li><a href="telefoni.php" title="Home">Home</a></li>
+			<li><a href="telefoni.php" title="Shop">Shop</a></li>
 			<li><a href="checkout.php" title="Checkout">Checkout</a></li>
-			<li><a href="Login.php" title="Logout">Logout</a></li>
+			<li><a href="Logout.php" title="Logout">Logout</a></li>
 		</ul>
 	</div>
 	<div class="main">
@@ -98,7 +98,7 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 					echo"<h3>MODELLI DISPONIBILI</h3><hr>";
 					echo"<form action = \"$autocall\" method=\"post\">";/*form con auto chiamata*/
 					while($row=mysqli_fetch_array($result)){
-						echo"<p><input type=\"radio\"name=\"id\" value=";echo $row['id'];echo ">";echo $row['nome'];echo"<strong>(Prezzo: ";echo $row['prezzo'];echo"$)</strong></p>"; /*stampiamo i modelli e prezzi*/
+						echo"<p><input type=\"radio\"name=\"id\" value=";echo $row['id'];echo ">";echo $row['nome'];echo"<strong>(Prezzo: ";echo $row['prezzo'];echo"&euro;)</strong></p>"; /*stampiamo i modelli e prezzi*/
 					}
 					echo"<input type=\"submit\"value=\"aggiungi al carrello\">";/*bottone action del form*/
 					echo"</form>";
@@ -116,8 +116,8 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 				$_SESSION['spesa_attuale']=0; /*queste variabili session stanno nel server*/
 				$_SESSION['carrello']=array();
 			}
-			else{ /*ALTRIMENTI PROCEDIAMO CON I CONTROLLI ORDINARI*/
-			if(isset($_POST['id'])){ //SE abbiamo selezionato qualcosa
+			if(isset($_SESSION['username']) && isset($_SESSION['password'])){ //SE abbiamo selezionato qualcosa e se siamo loggati
+				if(isset($_POST['id'])){
 				$id=$_POST['id']; //id del telefono scelto
 				//cerchiamo il telefono selezionato nel dbs avendo ricevuto l'id
 				$sql="SELECT * FROM $telefonoTable WHERE id = '$id'";
@@ -128,19 +128,24 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 						$_SESSION['spesa_attuale']+=$row['prezzo']; //aggiorniamo spesa corrente
 					}
 				}
-				else
+				else{
 					echo "query non valida";
-			} 
-			} /*SE NON PROVENIAMO DALLA FORM */
-			if($_SESSION['carrello']){//se il carrello non è vuoto 
+				}
+			}
+			}
+			else{
+				echo "<script> 
+						alert(\"Azione non permessa effettuare login\");
+						</script>";
+			}
+			if(isset($_SESSION['carrello'])&& isset($_SESSION['spesa_attuale'])){//se il carrello non è vuoto 
 							foreach($_SESSION['carrello'] as $item){ /*facciamo un ciclo foreach per stampare il contenuto*/
 								echo"<p>";	
 								echo $item; /*stampiamo tutti i modelli che sono stati aggiunti al carrello*/
 								echo "</p>";
 							}
+							echo "<hr><strong>Totale spesa: ";echo $_SESSION['spesa_attuale']; echo"&euro;</strong>";
 						}
-			echo "<hr><strong>Totale spesa: ";echo $_SESSION['spesa_attuale']; echo"$</strong>"; //stampiamo comunque la spesa corrente
-			
 			/*form per svuotare il carrello*/
 			echo "<form action \"$autocall\" method=\"POST\">
 			<p><input type=\"submit\" name=\"svuota\" value=\"Svuota\"></p>
@@ -151,8 +156,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			<p><input type=\"submit\" name=\"checkout\" value=\"Checkout\"></p>
 			</form>"; //opzione per effettuare checkout
 			
-			
-			exit(); //chiusura sessione
 			$connection->close(); /*chiudiamo connessione con dbs*/
 			?>
 		</div>
