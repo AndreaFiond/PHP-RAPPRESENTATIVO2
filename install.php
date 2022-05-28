@@ -23,11 +23,13 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 			if(mysqli_errno($connection)){
 				echo "errore";
 			}
-
+			/*ELIMINIAMO IL DBS SE GIA' CREATO*/
+			$query= "DROP DATABASE if exists $dbname";
+			$dropresult=mysqli_query($connection,$query);
 			/*CREAZIONE DBS*/
 
 			$query= "CREATE DATABASE if not exists $dbname";
-			if(mysqli_query($connection,$query)){
+			if(mysqli_query($connection,$query) && $dropresult){
 				echo "<h1>DBS creato</h1>";
 			}	
 			else {
@@ -44,7 +46,6 @@ PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
 
 			if(mysqli_errno($connection))
 				echo "<h1 style=\"color:red\">DBS non raggiungibile</h2>";
-			    mysql_drop_db($dbname);
 			/////TABELLA UTENTE
 			$query= "CREATE TABLE if not exists $userTable(
 				username VARCHAR(20) NOT NULL,
